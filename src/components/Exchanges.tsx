@@ -33,6 +33,7 @@ const Exchanges: FC = () => {
           );
         })}
       </ScrollView>
+      {!activeExchange && <Text>Выбери дату</Text>}
       {activeExchange ? <ExchangeItem exchange={activeExchange} /> : <ExchangeItem exchange={null} />}
     </>
   );

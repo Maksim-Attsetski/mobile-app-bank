@@ -5,12 +5,13 @@ interface IProps {
   children: ReactNode;
   onPress: (arg?: any) => void;
   style?: StyleProp<any>;
+  textStyle?: StyleProp<any>;
 }
 
-const Button: FC<IProps> = ({ children, onPress, style, ...props }) => {
+const Button: FC<IProps> = ({ children, onPress, style, textStyle, ...props }) => {
   return (
     <Pressable onPress={onPress} style={{ ...styles.link, ...style }} {...props}>
-      <Text>{children}</Text>
+      <Text style={{ ...textStyle }}>{children}</Text>
     </Pressable>
   );
 };

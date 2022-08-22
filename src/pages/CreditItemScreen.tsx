@@ -1,10 +1,10 @@
 import { FC, useEffect, useMemo } from 'react';
 import { Text, StyleSheet, View, StyleProp } from 'react-native';
 import { ICredit } from '../types/credit';
-import Layout from './Layout';
-import Button from './UI/Button';
-import Line from './UI/Line';
-import Title from './UI/Title';
+import Layout from '../components/Layout';
+import Button from '../components/UI/Button';
+import Line from '../components/UI/Line';
+import Title from '../components/UI/Title';
 
 const FlexItem = ({
   text1,
@@ -23,7 +23,7 @@ const FlexItem = ({
   );
 };
 
-const CreditItem: FC = ({ route, navigation }: any) => {
+const CreditItemScreen: FC = ({ route, navigation }: any) => {
   const credit: ICredit = useMemo(() => ({ ...route.params.credit }), [route.params]);
 
   return (
@@ -58,7 +58,7 @@ const CreditItem: FC = ({ route, navigation }: any) => {
 
       <Line />
 
-      <Button onPress={() => navigation.goBack()}>Back</Button>
+      <Button onPress={() => navigation.goBack()}>Назад</Button>
     </Layout>
   );
 };
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontStyle: 'italic',
+    textAlign: 'center',
   },
   creditItem: {
     backgroundColor: '#5460FE',
@@ -86,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreditItem;
+export default CreditItemScreen;
