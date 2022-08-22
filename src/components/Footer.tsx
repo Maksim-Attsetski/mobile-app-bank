@@ -12,7 +12,7 @@ const Footer: FC<IProps> = ({ navigate, currentPath }) => {
     <View style={styles.links}>
       {routeNames.map(link => (
         <Pressable onPress={() => navigate(link.name)} key={link.name}>
-          <Text style={currentPath === link ? { ...styles.link, ...styles.activeLink } : { ...styles.link }}>
+          <Text style={currentPath === link.name ? { ...styles.link, ...styles.activeLink } : { ...styles.link }}>
             {link.text}
           </Text>
         </Pressable>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Layout from '../components/Layout';
@@ -6,7 +6,7 @@ import Loader from '../components/UI/Loader';
 import Title from '../components/UI/Title';
 import useNews from '../hooks/useNews';
 
-const NewsScreen = () => {
+const NewsScreen: FC = () => {
   const { news, isNewsLoading } = useNews();
 
   return isNewsLoading ? (

@@ -1,43 +1,54 @@
-import axios from 'axios';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Text, View, StyleSheet, ScrollView, Pressable } from 'react-native';
+import BankBranch from '../components/BankBranch';
 import ExchangeItem from '../components/ExchangeItem';
+import Exchanges from '../components/Exchanges';
 import Layout from '../components/Layout';
+import Line from '../components/UI/Line';
 import Loader from '../components/UI/Loader';
 import Title from '../components/UI/Title';
+import useCredit from '../hooks/useCredit';
 import useExchanges from '../hooks/useExchanges';
+import { TypeNavigation } from '../navigation/navTypes';
+import { ICredit } from '../types/credit';
 import { IExchange } from '../types/kurs';
 import { getExchangesDate } from '../utils/getExchangesDate';
 
-const ExchangesScreen: FC = () => {
-  const { exchanges, isExchangesLoading } = useExchanges();
-  const [activeExchange, setActiveExchange] = useState<IExchange | null>(null);
+interface INav {
+  navigation: {
+    navigate: (screen: keyof TypeNavigation, arg: any) => void;
+  };
+}
 
-  return isExchangesLoading ? (
-    <Loader />
-  ) : (
-    <Layout>
+const ExchangesScreen = ({ navigation }: INav) => {
+  const { credits, isCreditLoading } = useCredit();
+
+  return (
+    <Layout isScroll>
       <Title text={'Курс валют'} style={{ marginBottom: 10 }} />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {exchanges.map((item, i) => {
-          const { day, time } = getExchangesDate(item.kurs_date_time);
-          const isActive = activeExchange?.kurs_date_time === item.kurs_date_time;
-          return (
+
+      <Exchanges />
+      <Line />
+
+      <Title text={'Кредиты'} style={{ marginBottom: 10 }} />
+
+      {isCreditLoading ? (
+        <Loader size='small' />
+      ) : (
+        <ScrollView horizontal>
+          {credits.map((credit: ICredit) => (
             <Pressable
-              onPress={() => setActiveExchange(item)}
-              style={{
-                ...styles.exchangeTime,
-                ...(isActive ? styles.activeExchange : {}),
-              }}
-              key={i}
+              onPress={() => navigation.navigate('Credit', { credit })}
+              key={credit.inf_id}
+              style={{ ...styles.exchangeTime, width: 300 }}
             >
-              <Text style={{ ...(isActive ? styles.activeText : styles.text), fontSize: 36 }}>{day}</Text>
-              <Text style={{ ...(isActive ? styles.activeText : styles.text) }}>{time}</Text>
+              <Text style={styles.creditText}>{credit.group_name_ru}</Text>
             </Pressable>
-          );
-        })}
-      </ScrollView>
-      {activeExchange ? <ExchangeItem exchange={activeExchange} /> : <ExchangeItem exchange={null} />}
+          ))}
+        </ScrollView>
+      )}
+      <Line />
+      <BankBranch navigation={navigation} />
     </Layout>
   );
 };
@@ -51,6 +62,11 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  creditText: {
+    color: '#111942',
+    textAlign: 'center',
+    paddingHorizontal: 5,
   },
   flex: {
     justifyContent: 'space-between',

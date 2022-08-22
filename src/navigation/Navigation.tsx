@@ -5,6 +5,8 @@ import Footer from '../components/Footer';
 import NewsScreen from '../pages/NewsScreen';
 import HomeScreen from '../pages/HomeScreen';
 import ExchangesScreen from '../pages/ExchangesScreen';
+import CreditItem from '../components/CreditItem';
+import BankBranchScreen from '../pages/BankBranchScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +36,9 @@ const Navigation: FC = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Home' component={HomeScreen} />
           <Stack.Screen name='Exchanges' component={ExchangesScreen} />
+          <Stack.Screen name='Credit' component={CreditItem} />
           <Stack.Screen name='News' component={NewsScreen} />
+          <Stack.Screen name='BankBranch' component={BankBranchScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Footer navigate={containerRef.navigate} currentPath={path} />

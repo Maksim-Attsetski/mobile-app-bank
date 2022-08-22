@@ -2,9 +2,11 @@ export type TypeNavigation = {
   Home: undefined;
   Exchanges: undefined;
   News: undefined;
+  Credit: undefined;
+  BankBranch: undefined;
 };
 
-interface IRoute {
+export interface IRoute {
   name: keyof TypeNavigation;
   text: 'Новости' | 'Курс' | 'Главная';
 }
