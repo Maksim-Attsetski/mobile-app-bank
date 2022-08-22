@@ -10,15 +10,15 @@ const ExchangeItem: FC<IProps> = ({ exchange }) => {
   return (
     <View style={styles.exchange}>
       <View style={{ ...styles.flex, marginBottom: 10 }}>
-        <Text>Euro in: {exchange?.EURCARD_in || '---'}</Text>
-        <Text>Euro out: {exchange?.EURCARD_out || '---'}</Text>
+        <Text>Euro покупка: {exchange?.EURCARD_in || '---'}</Text>
+        <Text>Euro продажа: {exchange?.EURCARD_out || '---'}</Text>
       </View>
       <View style={{ ...styles.flex, marginBottom: 10 }}>
-        <Text>Usd in: {exchange?.USDCARD_in || '---'}</Text>
-        <Text>Usd out: {exchange?.USDCARD_out || '---'}</Text>
+        <Text>Usd покупка: {exchange?.USDCARD_in || '---'}</Text>
+        <Text>Usd продажа: {exchange?.USDCARD_out || '---'}</Text>
       </View>
 
-      <Text>Date: {exchange?.kurs_date_time || '---'}</Text>
+      <Text>Полная дата: {exchange?.kurs_date_time || '---'}</Text>
     </View>
   );
 };
