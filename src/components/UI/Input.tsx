@@ -6,15 +6,28 @@ interface IProps {
   onChangeText: (value: string) => void;
   style?: StyleProp<any>;
   placeholder?: string;
+  isSecure?: boolean;
+  defaultValue?: string;
 }
 
-const Input: FC<IProps> = ({ style, value, onChangeText, placeholder, ...props }) => {
+const Input: FC<IProps> = ({
+  style,
+  defaultValue = '',
+  value,
+  onChangeText,
+  placeholder,
+  isSecure = false,
+  ...props
+}) => {
   return (
     <TextInput
       {...props}
       value={value}
+      defaultValue={defaultValue}
       onChangeText={onChangeText}
       placeholder={placeholder}
+      secureTextEntry={isSecure}
+      autoCapitalize='none'
       style={{ ...styles.input, ...style }}
     />
   );

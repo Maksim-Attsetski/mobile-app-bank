@@ -8,6 +8,8 @@ import ExchangesScreen from '../pages/ExchangesScreen';
 import CreditItemScreen from '../pages/CreditItemScreen';
 import BankBranchScreen from '../pages/BankBranchScreen';
 import AllBankBranchesScreen from '../pages/AllBankBranchesScreen';
+import AuthScreen from '../pages/AuthScreen';
+import ProfileScreen from '../pages/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +43,8 @@ const Navigation: FC = () => {
           <Stack.Screen name='News' component={NewsScreen} />
           <Stack.Screen name='BankBranch' component={BankBranchScreen} />
           <Stack.Screen name='AllBankBranches' component={AllBankBranchesScreen} />
+          <Stack.Screen name='Auth' component={AuthScreen} />
+          <Stack.Screen name='Profile' component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Footer navigate={containerRef.navigate} currentPath={path} />

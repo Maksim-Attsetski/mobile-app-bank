@@ -8,7 +8,7 @@ interface IProps {
 const Loader: FC<IProps> = ({ size = 'large' }) => {
   return (
     <SafeAreaView style={size === 'large' ? styles.container : {}}>
-      <ActivityIndicator size={'large'} />
+      <ActivityIndicator size={'large'} color={'#5460fe'} />
     </SafeAreaView>
   );
 };
