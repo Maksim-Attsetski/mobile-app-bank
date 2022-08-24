@@ -13,6 +13,8 @@ import { ICard } from '../types/card';
 import { getCardNameColor } from '../utils/getCardNameColor';
 import { getCardNumber } from '../utils/getCardNumber';
 import { fs } from '../firebase/firebase';
+import { LinearGradient } from 'expo-linear-gradient';
+import { getBalance } from '../utils/getBalance';
 
 const HomeScreen: FC = () => {
   const { cards, cardIsLoading } = useCard();
@@ -60,7 +62,7 @@ const HomeScreen: FC = () => {
           userId: user.uid,
         };
 
-        addDoc(collection(fs, 'cards'), newCard);
+        await addDoc(collection(fs, 'cards'), newCard);
       } else {
         console.log('Увы и ах');
       }
@@ -79,7 +81,7 @@ const HomeScreen: FC = () => {
       {!!user ? (
         <View>
           {cardIsLoading ? (
-            <Loader />
+            <Loader size='small' />
           ) : (
             <View>
               <Button onPress={addNewCard}>Добавить карту</Button>
@@ -88,14 +90,18 @@ const HomeScreen: FC = () => {
                 <Text>Нет карт</Text>
               ) : (
                 cards.map(card => (
-                  <View key={card.timestamp} style={{ backgroundColor: getCardNameColor(card.name), ...styles.card }}>
-                    <Text style={styles.text}>{card.balance}</Text>
-                    <Text style={styles.text}>{card.cardNumber}</Text>
-                    <View style={styles.flex}>
-                      <Text style={styles.text}>{card.name}</Text>
-                      <Text style={styles.text}>{card.currency}</Text>
-                      <Text style={styles.text}>{card.type}</Text>
-                    </View>
+                  <View key={card.cardNumber}>
+                    <LinearGradient
+                      colors={getCardNameColor(card.name)}
+                      start={{ x: 0.0, y: 0.25 }}
+                      end={{ x: 1.8, y: 1 }}
+                      style={{ ...styles.card }}
+                    >
+                      <View style={styles.flex}>
+                        <Text style={styles.text}>Баланс: {getBalance(card.balance, card.currency)}</Text>
+                        <Text style={styles.text}>{card.cardNumber.slice(-4)}</Text>
+                      </View>
+                    </LinearGradient>
                   </View>
                 ))
               )}
@@ -112,7 +118,7 @@ const HomeScreen: FC = () => {
 const styles = StyleSheet.create({
   card: {
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 20,
     borderRadius: 10,
     marginBottom: 10,
   },
@@ -123,6 +129,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
+    fontSize: 16,
   },
 });
 
