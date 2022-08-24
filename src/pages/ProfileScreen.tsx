@@ -21,10 +21,6 @@ const ProfileScreen: FC = () => {
     handleLogout();
   };
 
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
-
   return profileIsLoading || !profile ? (
     <Loader />
   ) : (

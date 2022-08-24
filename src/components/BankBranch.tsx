@@ -23,7 +23,7 @@ const BankBranch = ({ navigation }: INav) => {
   );
 
   return isBankBranchesLoading ? (
-    <Loader />
+    <Loader size='small' />
   ) : (
     <View>
       <Title text='Отделения банков' style={{ marginBottom: 10 }} />
