@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { TypeCardName, TypeCardType, TypeCurrency } from '../../types/card';
 
-type IResolve = TypeCardName | TypeCurrency | TypeCardType;
+type IResolve = TypeCardName | TypeCurrency | TypeCardType | boolean;
 
 interface IButtons {
   text: string;

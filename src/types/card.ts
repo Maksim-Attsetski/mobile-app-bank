@@ -10,4 +10,5 @@ export interface ICard {
   currency: TypeCurrency;
   name: TypeCardName;
   type: TypeCardType;
+  uid: string;
 }

@@ -10,6 +10,7 @@ import BankBranchScreen from '../pages/BankBranchScreen';
 import AllBankBranchesScreen from '../pages/AllBankBranchesScreen';
 import AuthScreen from '../pages/AuthScreen';
 import ProfileScreen from '../pages/ProfileScreen';
+import CardScreen from '../pages/CardScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,7 @@ const Navigation: FC = () => {
           <Stack.Screen name='AllBankBranches' component={AllBankBranchesScreen} />
           <Stack.Screen name='Auth' component={AuthScreen} />
           <Stack.Screen name='Profile' component={ProfileScreen} />
+          <Stack.Screen name='Card' component={CardScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Footer navigate={containerRef.navigate} currentPath={path} />

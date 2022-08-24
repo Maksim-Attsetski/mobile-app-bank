@@ -3,12 +3,12 @@ import { TypeCardName } from '../types/card';
 export const getCardNameColor = (cardName: TypeCardName): string[] => {
   switch (cardName) {
     case 'Airline':
-      return ['#5460fe', '#ffeaa7'];
+      return ['#ff9a9e', '#fad0c4'];
     case 'All inclusive':
-      return ['#6c5ce7', '#ffeaa7'];
+      return ['#009efd', '#2af598'];
     case 'Econom':
-      return ['#111942', '#5460fe'];
+      return ['#09203f', '#537895'];
     default:
-      return ['#111942', '#5460fe'];
+      return ['#09203f', '#09203f'];
   }
 };

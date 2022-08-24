@@ -7,4 +7,5 @@ export type TypeNavigation = {
   AllBankBranches: undefined;
   Profile: undefined;
   Auth: undefined;
+  Card: undefined;
 };

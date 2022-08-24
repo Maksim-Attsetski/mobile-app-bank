@@ -1,5 +1,8 @@
-import { onSnapshot, query, collection, where } from 'firebase/firestore';
+import { onSnapshot, query, collection, where, doc, deleteDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import AsyncAlert from '../components/UI/AsyncAlert';
+import AsyncPrompt from '../components/UI/AsyncPrompt';
 import { fs } from '../firebase/firebase';
 import { ICard } from '../types/card';
 import { useAuth } from './useAuth';
@@ -24,9 +27,28 @@ const useCard = () => {
     setCardIsLoading(false);
   }, [user]);
 
+  const deleteCard = async (card: ICard) => {
+    if (!user) return;
+
+    await deleteDoc(doc(fs, 'cards', card.uid));
+  };
+
+  const transferMoney = async (sender: ICard, receiver: ICard) => {
+    // const sum = AsyncPrompt({
+    //   title: 'Какую сумму хотите перевести',
+    //   msg: `У вас на балансе ${sender.balance}`,
+    // });
+
+    const sum = Alert.prompt('Какую сумму хотите перевести', `У вас на балансе ${sender.balance}`);
+
+    console.log(sum);
+  };
+
   return {
     cardIsLoading,
     cards,
+    deleteCard,
+    transferMoney,
   };
 };
 export default useCard;

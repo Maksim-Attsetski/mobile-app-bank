@@ -1,6 +1,6 @@
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import React, { FC } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Layout from '../components/Layout';
 import AsyncAlert from '../components/UI/AsyncAlert';
 import Button from '../components/UI/Button';
@@ -15,8 +15,9 @@ import { getCardNumber } from '../utils/getCardNumber';
 import { fs } from '../firebase/firebase';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getBalance } from '../utils/getBalance';
+import Card from '../components/Card';
 
-const HomeScreen: FC = () => {
+const HomeScreen: FC = ({ navigation }: any) => {
   const { cards, cardIsLoading } = useCard();
   const { user } = useAuth();
 
@@ -60,6 +61,7 @@ const HomeScreen: FC = () => {
           name: cardName,
           type: cardType,
           userId: user.uid,
+          uid: user.uid,
         };
 
         await addDoc(collection(fs, 'cards'), newCard);
@@ -89,21 +91,7 @@ const HomeScreen: FC = () => {
               {cards.length === 0 ? (
                 <Text>Нет карт</Text>
               ) : (
-                cards.map(card => (
-                  <View key={card.cardNumber}>
-                    <LinearGradient
-                      colors={getCardNameColor(card.name)}
-                      start={{ x: 0.0, y: 0.25 }}
-                      end={{ x: 1.8, y: 1 }}
-                      style={{ ...styles.card }}
-                    >
-                      <View style={styles.flex}>
-                        <Text style={styles.text}>Баланс: {getBalance(card.balance, card.currency)}</Text>
-                        <Text style={styles.text}>{card.cardNumber.slice(-4)}</Text>
-                      </View>
-                    </LinearGradient>
-                  </View>
-                ))
+                cards.map(card => <Card navigation={navigation} card={card} key={card.cardNumber} />)
               )}
             </View>
           )}
@@ -114,23 +102,5 @@ const HomeScreen: FC = () => {
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  flex: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 16,
-  },
-});
 
 export default HomeScreen;
