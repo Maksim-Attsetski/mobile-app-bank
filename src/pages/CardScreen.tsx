@@ -1,12 +1,15 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { FC, useMemo } from 'react';
+import { User } from 'firebase/auth';
+import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import Card from '../components/Card';
 import Layout from '../components/Layout';
 import AsyncAlert from '../components/UI/AsyncAlert';
 import Button from '../components/UI/Button';
+import Input from '../components/UI/Input';
 import Line from '../components/UI/Line';
 import Loader from '../components/UI/Loader';
+import { useAuth } from '../hooks/useAuth';
 import useCard from '../hooks/useCard';
 import { ICard } from '../types/card';
 import { getBalance } from '../utils/getBalance';
@@ -14,22 +17,27 @@ import { getCardNameColor } from '../utils/getCardNameColor';
 import { getDate } from '../utils/getDate';
 
 const CardScreen: FC = ({ route, navigation }: any) => {
-  const { deleteCard, cards, cardIsLoading } = useCard();
+  const { allUsers } = useAuth();
+  const { cards, cardIsLoading, transferMoney, deleteCard } = useCard();
+  const [transfer, setTransfer] = useState<string>('');
 
-  const card: ICard = useMemo(() => cards.filter(item => item.cardNumber === route.params.card.cardNumber)[0], [cards]);
+  const mainCard: ICard = useMemo(
+    () => cards.filter((item: ICard) => item.cardNumber === route.params.card.cardNumber)[0],
+    [cards]
+  );
   const otherCards: ICard[] = useMemo(
-    () => cards.filter(item => item.cardNumber !== route.params.card.cardNumber),
+    () => cards.filter((item: ICard) => item.cardNumber !== route.params.card.cardNumber),
     [cards]
   );
 
-  const createdAt: string = useMemo(() => (!card ? '' : getDate(+card.timestamp?.seconds * 1000)), [cards]);
+  const createdAt: string = useMemo(() => (!mainCard ? '' : getDate(+mainCard.timestamp?.seconds * 1000)), [cards]);
 
   const handleDeleteCard = async () => {
-    if (!card) return;
+    if (!mainCard) return;
 
     const isAgree = await AsyncAlert({
       title: 'Вы точно хотите удалить карту?',
-      msg: `На балансе данной карты ${card.balance} ${card.currency}`,
+      msg: `На балансе данной карты ${mainCard.balance} ${mainCard.currency}`,
       buttons: [
         { text: 'Да', resolve: true },
         { text: 'Нет', resolve: false },
@@ -38,11 +46,20 @@ const CardScreen: FC = ({ route, navigation }: any) => {
 
     if (isAgree) {
       navigation.navigate('Home');
-      deleteCard(card);
+      deleteCard(mainCard);
     }
   };
 
-  return cardIsLoading || !card ? (
+  const onChange = (value: string) => {
+    const newValue: string = value.replace(/\D[^\.]/g, '');
+    setTransfer(newValue);
+  };
+
+  const handleTransferCard = (receiverCard: ICard) => {
+    transferMoney(mainCard, receiverCard, +transfer);
+  };
+
+  return cardIsLoading || !mainCard ? (
     <Loader />
   ) : (
     <Layout>
@@ -50,32 +67,60 @@ const CardScreen: FC = ({ route, navigation }: any) => {
         Назад
       </Button>
       <LinearGradient
-        colors={getCardNameColor(card.name)}
+        colors={getCardNameColor(mainCard.name)}
         start={{ x: 0.0, y: 0.45 }}
         end={{ x: 1, y: 1 }}
         style={{ ...styles.card }}
       >
-        <Text style={styles.cardText}>{card.cardNumber}</Text>
-        <Text style={styles.cardType}>{card.type}</Text>
+        <Text style={styles.cardText}>{mainCard.cardNumber}</Text>
+        <Text style={styles.cardType}>{mainCard.type}</Text>
         <Text style={styles.cardCurrency}>
-          {card.currency}, {card.name}
+          {mainCard.currency}, {mainCard.name}
         </Text>
       </LinearGradient>
       <View style={styles.content}>
-        <Text style={styles.text}>Баланс: {getBalance(card.balance, card.currency)}</Text>
+        <Text style={styles.text}>Баланс: {getBalance(mainCard.balance, mainCard.currency)}</Text>
         <Text style={styles.text}>Сделано: {createdAt}</Text>
         <Button style={styles.cardButton} onPress={handleDeleteCard}>
           Удалить карту
         </Button>
         <Line />
+        <Input
+          value={transfer}
+          onChangeText={(value: string) => onChange(value)}
+          placeholder={'Введите сумму перевода...'}
+          style={{ marginBottom: 10 }}
+        />
         {otherCards.length > 0 ? (
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {otherCards.map(item => (
-              <Card card={item} navigation={navigation} key={card.cardNumber} isOtherCard />
+            {otherCards.map((item, i) => (
+              <Card
+                card={item}
+                style={{ marginRight: 8 }}
+                navigation={navigation}
+                key={item.cardNumber}
+                isOtherCard
+                handleTransferCard={handleTransferCard}
+              />
             ))}
           </ScrollView>
         ) : (
           <Text>У вас нет других карт</Text>
+        )}
+
+        <Line />
+
+        {!!allUsers.length ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {allUsers.map((item: User) => (
+              <View key={item.uid} style={styles.user}>
+                <Text style={styles.avatar}>{item.displayName?.slice(0, 1)}</Text>
+                <Text style={{ fontSize: 20, marginRight: 10, textTransform: 'capitalize' }}>{item.displayName}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        ) : (
+          <Text>нет других карт</Text>
         )}
       </View>
     </Layout>
@@ -111,6 +156,25 @@ const styles = StyleSheet.create({
   cardText: {
     color: '#fff',
     fontSize: 16,
+  },
+  avatar: {
+    fontSize: 24,
+    textTransform: 'capitalize',
+    backgroundColor: '#5460fe',
+    width: 40,
+    height: 40,
+    textAlign: 'center',
+    lineHeight: 40,
+    color: '#fff',
+    borderRadius: 100,
+  },
+  user: {
+    backgroundColor: '#eee',
+    marginRight: 10,
+    padding: 10,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     marginBottom: 5,

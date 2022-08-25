@@ -1,8 +1,8 @@
-import { onSnapshot, query, collection, where, doc, deleteDoc } from 'firebase/firestore';
+import { User } from 'firebase/auth';
+import { onSnapshot, query, collection, where, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import AsyncAlert from '../components/UI/AsyncAlert';
-import AsyncPrompt from '../components/UI/AsyncPrompt';
 import { fs } from '../firebase/firebase';
 import { ICard } from '../types/card';
 import { useAuth } from './useAuth';
@@ -33,16 +33,58 @@ const useCard = () => {
     await deleteDoc(doc(fs, 'cards', card.uid));
   };
 
-  const transferMoney = async (sender: ICard, receiver: ICard) => {
-    // const sum = AsyncPrompt({
-    //   title: 'Какую сумму хотите перевести',
-    //   msg: `У вас на балансе ${sender.balance}`,
-    // });
-
-    const sum = Alert.prompt('Какую сумму хотите перевести', `У вас на балансе ${sender.balance}`);
-
-    console.log(sum);
+  const transferMoney = async (sender: ICard, receiver: ICard, sum: number) => {
+    setCardIsLoading(false);
+    try {
+      await updateDoc(doc(fs, 'cards', sender.uid), {
+        balance: sender.balance - sum,
+      });
+      await updateDoc(doc(fs, 'cards', receiver.uid), {
+        balance: receiver.balance + sum,
+      });
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setCardIsLoading(false);
+    }
   };
+
+  // const getAllCards = async (card: ICard) => {
+  //   try {
+  //     const qCard = query(collection(fs, 'cards'), where('userId', '!=', card.userId));
+  //     const unsubscribe = onSnapshot(qCard, querySnapshot => {
+  //       let allCards: ICard[] = [];
+
+  //       querySnapshot.forEach(doc => {
+  //         allCards.push({
+  //           ...(doc.data() as ICard),
+  //           uid: doc.id,
+  //         });
+  //       });
+
+  //       // const cardNums = allCards.filter(
+  //       //   (item, index, array) => array.findIndex((item2: ICard) => item2.cardNumber === item.cardNumber) === index
+  //       // );
+  //       // console.log(cardNums);
+
+  //       // setAllCards(cardNums);
+
+  //       const qUser = query(collection(fs, 'users'), where('uid', '!=', user?.uid));
+  //       const querySnap = onSnapshot(qUser, querySnapshot => {
+  //         let users: User[] = [];
+
+  //         querySnapshot.forEach(doc => {
+  //           users.push({
+  //             ...(doc.data() as User),
+  //             uid: doc.id,
+  //           });
+  //         });
+
+  //         console.log(users);
+  //       });
+  //     });
+  //   } catch (error) {}
+  // };
 
   return {
     cardIsLoading,
