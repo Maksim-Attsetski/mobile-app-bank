@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Text, View } from 'react-native';
 import Layout from '../components/Layout';
 import Button from '../components/UI/Button';
 import Input from '../components/UI/Input';
 import Line from '../components/UI/Line';
+import Title from '../components/UI/Title';
 import { useAuth } from '../hooks/useAuth';
 import { TypeNavigation } from '../navigation/navTypes';
 
@@ -13,7 +14,7 @@ interface IFormItems {
   password: string;
 }
 
-const AuthScreen = ({ navigation }: any) => {
+const AuthScreen: FC<any> = ({ navigation }) => {
   const { handleRegister, handleLogin } = useAuth();
   const { navigate } = useNavigation();
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -29,11 +30,8 @@ const AuthScreen = ({ navigation }: any) => {
 
   return (
     <Layout>
-      <Button style={{ alignSelf: 'flex-end' }} onPress={() => setIsLogin(prev => !prev)}>
-        {isLogin ? 'Нет аккаунта?' : 'Есть аккаунт?'}
-      </Button>
+      <Title text={'Авторизуйтесь'} style={{ marginBottom: 30 }} />
 
-      <Line />
       <Input
         value={formItems.email}
         onChangeText={(value: string) => setFormItems({ ...formItems, email: value })}
@@ -48,7 +46,12 @@ const AuthScreen = ({ navigation }: any) => {
         isSecure
       />
       <Line />
-      <Button onPress={handleAuth}>{isLogin ? 'Войти' : 'Зарегистрироваться'}</Button>
+      <Button onPress={handleAuth} style={{ alignSelf: 'flex-start' }} filled>
+        {isLogin ? 'Войти' : 'Зарегистрироваться'}
+      </Button>
+      <Button style={{ alignSelf: 'flex-end', marginTop: 10 }} onPress={() => setIsLogin(prev => !prev)}>
+        {isLogin ? 'Нет аккаунта?' : 'Есть аккаунт?'}
+      </Button>
     </Layout>
   );
 };

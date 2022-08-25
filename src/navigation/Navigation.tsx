@@ -11,6 +11,8 @@ import AllBankBranchesScreen from '../pages/AllBankBranchesScreen';
 import AuthScreen from '../pages/AuthScreen';
 import ProfileScreen from '../pages/ProfileScreen';
 import CardScreen from '../pages/CardScreen';
+import { LinearGradient } from 'expo-linear-gradient';
+import { View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,8 +36,9 @@ const Navigation: FC = () => {
     return () => containerRef.removeListener('state', listener);
   }, []);
 
+  const colors = ['#accbee', '#e7f0fd'];
   return (
-    <>
+    <LinearGradient colors={colors} style={{ flex: 1 }} start={{ x: 0, y: 0.45 }} end={{ x: 1, y: 0.8 }}>
       <NavigationContainer ref={containerRef}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Home' component={HomeScreen} />
@@ -50,7 +53,7 @@ const Navigation: FC = () => {
         </Stack.Navigator>
       </NavigationContainer>
       <Footer navigate={containerRef.navigate} currentPath={path} />
-    </>
+    </LinearGradient>
   );
 };
 export default Navigation;

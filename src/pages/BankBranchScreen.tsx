@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { Text, View, StyleSheet, StyleProp, Dimensions } from 'react-native';
 import Layout from '../components/Layout';
 import Button from '../components/UI/Button';
@@ -27,7 +27,7 @@ const FlexItem = ({
   );
 };
 
-const BankBranchScreen = ({ route, navigation }: any) => {
+const BankBranchScreen: FC<any> = ({ route, navigation }) => {
   const branch: IBankBranch = useMemo(() => ({ ...route.params.branch }), [route.params]);
 
   return (

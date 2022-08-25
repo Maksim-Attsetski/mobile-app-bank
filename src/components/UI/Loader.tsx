@@ -1,23 +1,28 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { FC } from 'react';
-import { ActivityIndicator, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, SafeAreaView, StyleSheet } from 'react-native';
 
 interface IProps {
   size?: 'large' | 'small';
 }
 
 const Loader: FC<IProps> = ({ size = 'large' }) => {
-  return (
-    <SafeAreaView style={size === 'large' ? styles.container : {}}>
-      <ActivityIndicator size={'large'} color={'#5460fe'} />
-    </SafeAreaView>
+  const colors = ['#accbee', '#e7f0fd'];
+  return size === 'large' ? (
+    <LinearGradient colors={colors} style={{ flex: 1 }} start={{ x: 0.0, y: 0.45 }} end={{ x: 1, y: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size={'large'} color={'#5460fe'} />
+      </SafeAreaView>
+    </LinearGradient>
+  ) : (
+    <ActivityIndicator size={'large'} color={'#5460fe'} />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
-    transform: [{ scale: 4 }],
     flex: 1,
+    transform: [{ scale: 4 }],
     justifyContent: 'center',
     alignItems: 'center',
   },

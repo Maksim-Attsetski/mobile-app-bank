@@ -14,13 +14,13 @@ import { ICredit } from '../types/credit';
 import { IExchange } from '../types/kurs';
 import { getExchangesDate } from '../utils/getExchangesDate';
 
-interface INav {
+interface IProps {
   navigation: {
     navigate: (screen: keyof TypeNavigation, arg: any) => void;
   };
 }
 
-const ExchangesScreen = ({ navigation }: INav) => {
+const ExchangesScreen: FC<IProps> = ({ navigation }) => {
   const { credits, isCreditLoading } = useCredit();
 
   return (

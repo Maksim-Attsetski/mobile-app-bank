@@ -22,30 +22,28 @@ const Card: FC<IProps> = ({ card, navigation, isOtherCard = false }) => {
   };
 
   return (
-    <View key={card.cardNumber}>
-      <LinearGradient
-        colors={getCardNameColor(card.name)}
-        start={{ x: 0.0, y: 0.25 }}
-        end={{ x: 1.8, y: 1 }}
-        style={{ ...styles.card }}
-      >
-        <View style={styles.flex}>
-          <View>
-            <Text style={{ ...styles.text, marginBottom: 3 }}>Баланс: {getBalance(card.balance, card.currency)}</Text>
-            {!isOtherCard ? (
-              <TouchableOpacity onPress={() => navigation.navigate('Card', { card })}>
-                <Text style={styles.text}>Открыть</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={handleTransferCard}>
-                <Text style={styles.text}>Перести деньги</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-          <Text style={styles.text}>{card.cardNumber.slice(-4)}</Text>
+    <LinearGradient
+      colors={getCardNameColor(card.name)}
+      start={{ x: 0.0, y: 0.25 }}
+      end={{ x: 1.8, y: 1 }}
+      style={{ ...styles.card }}
+    >
+      <View style={styles.flex}>
+        <View>
+          <Text style={{ ...styles.text, marginBottom: 3 }}>Баланс: {getBalance(card.balance, card.currency)}</Text>
+          {!isOtherCard ? (
+            <TouchableOpacity onPress={() => navigation.navigate('Card', { card })}>
+              <Text style={styles.text}>Открыть</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={handleTransferCard}>
+              <Text style={styles.text}>Перести деньги</Text>
+            </TouchableOpacity>
+          )}
         </View>
-      </LinearGradient>
-    </View>
+        <Text style={styles.text}>{card.cardNumber.slice(-4)}</Text>
+      </View>
+    </LinearGradient>
   );
 };
 

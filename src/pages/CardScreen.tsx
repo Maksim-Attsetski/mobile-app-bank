@@ -46,7 +46,7 @@ const CardScreen: FC = ({ route, navigation }: any) => {
     <Loader />
   ) : (
     <Layout>
-      <Button onPress={() => navigation.goBack()} style={styles.cardButton}>
+      <Button onPress={() => navigation.goBack()} style={styles.cardButton} filled>
         Назад
       </Button>
       <LinearGradient
@@ -71,7 +71,7 @@ const CardScreen: FC = ({ route, navigation }: any) => {
         {otherCards.length > 0 ? (
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {otherCards.map(item => (
-              <Card card={item} navigation={navigation} isOtherCard />
+              <Card card={item} navigation={navigation} key={card.cardNumber} isOtherCard />
             ))}
           </ScrollView>
         ) : (

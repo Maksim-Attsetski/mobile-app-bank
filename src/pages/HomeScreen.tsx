@@ -75,8 +75,10 @@ const HomeScreen: FC = ({ navigation }: any) => {
 
   return (
     <Layout>
-      <Title text='Главная' />
-      <Text>Это мое первое приложение на React Native</Text>
+      <View style={styles.whiteBlock}>
+        <Title text='Главная' />
+        <Text>Это мое первое приложение на React Native</Text>
+      </View>
 
       <Line />
 
@@ -86,7 +88,9 @@ const HomeScreen: FC = ({ navigation }: any) => {
             <Loader size='small' />
           ) : (
             <View>
-              <Button onPress={addNewCard}>Добавить карту</Button>
+              <Button onPress={addNewCard} filled>
+                Добавить карту
+              </Button>
               <Line />
               {cards.length === 0 ? (
                 <Text>Нет карт</Text>
@@ -102,5 +106,14 @@ const HomeScreen: FC = ({ navigation }: any) => {
     </Layout>
   );
 };
+
+const styles = StyleSheet.create({
+  whiteBlock: {
+    padding: 10,
+    paddingBottom: 15,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
+});
 
 export default HomeScreen;

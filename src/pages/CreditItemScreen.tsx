@@ -28,6 +28,9 @@ const CreditItemScreen: FC = ({ route, navigation }: any) => {
 
   return (
     <Layout>
+      <Button onPress={() => navigation.goBack()} filled style={{ marginBottom: 10, alignSelf: 'flex-end' }}>
+        Назад
+      </Button>
       <Title text={`Название: "${credit.group_name_ru}"`} style={styles.title} />
 
       <Line />
@@ -55,10 +58,6 @@ const CreditItemScreen: FC = ({ route, navigation }: any) => {
         text2={credit.inf_max_size === 0 ? ' не ограничено' : `${credit.inf_max_size} BYN`}
       />
       <FlexItem text1={'Уплата процентов'} text2={credit.platName} />
-
-      <Line />
-
-      <Button onPress={() => navigation.goBack()}>Назад</Button>
     </Layout>
   );
 };

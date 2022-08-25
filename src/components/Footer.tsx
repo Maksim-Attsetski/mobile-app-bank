@@ -1,7 +1,8 @@
 import React, { FC, useMemo } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { useAuth } from '../hooks/useAuth';
 import { TypeNavigation } from '../navigation/navTypes';
+import Line from './UI/Line';
 
 interface IProps {
   navigate: (screen: keyof TypeNavigation) => void;
@@ -22,40 +23,80 @@ const Footer: FC<IProps> = ({ navigate, currentPath }) => {
   );
 
   return (
-    <View style={styles.links}>
-      {footerLinks.map(link => (
-        <Pressable onPress={() => navigate(link.name)} key={link.name}>
-          <Text style={currentPath === link.name ? { ...styles.link, ...styles.activeLink } : { ...styles.link }}>
-            {link.text}
-          </Text>
-        </Pressable>
-      ))}
+    <View style={styles.footer}>
+      <View style={styles.links}>
+        {/* <View style={styles.leftBrace} />
+      <View style={styles.rightBrace} /> */}
+        {footerLinks.map(link => {
+          const isActive = currentPath === link.name && { ...styles.active };
+          return (
+            <Pressable onPress={() => navigate(link.name)} key={link.name} style={styles.link}>
+              <Text style={{ ...styles.border, ...isActive }} />
+              <Text style={currentPath === link.name && { ...styles.activeText }}>{link.text}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  footer: {
+    width: Dimensions.get('window').width,
+    // backgroundColor: '#accbee',
+  },
   links: {
-    paddingVertical: 20,
     paddingHorizontal: 15,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    backgroundColor: '#FFF',
+    position: 'relative',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  // leftBrace: {
+  //   position: 'absolute',
+  //   top: -20,
+  //   left: 0,
+  //   width: 20,
+  //   height: 20,
+  //   borderTopRightRadius: 20,
+  //   backgroundColor: '#accbee',
+  // },
+  // rightBrace: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   right: 0,
+  //   width: 20,
+  //   height: 20,
+  //   // borderTopRightRadius: 20,
+  //   // backgroundColor: '#e7f0fd',
+  // },
+  border: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: 5,
+    borderRadius: 10,
+    backgroundColor: 'transparent',
+  },
+  active: {
+    backgroundColor: '#5460fe',
+  },
+  activeText: {
+    color: '#353434',
   },
   link: {
-    borderWidth: 1,
-    borderColor: '#5460FE',
-    borderStyle: 'solid',
-    borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    fontSize: 18,
-    marginHorizontal: 4,
-  },
-  activeLink: {
+    position: 'relative',
+    borderWidth: 5,
     borderColor: 'transparent',
-    backgroundColor: '#5460FE',
-    color: '#fff',
+    borderStyle: 'solid',
+    paddingVertical: 20,
+    fontSize: 16,
+    marginHorizontal: 4,
   },
 });
 

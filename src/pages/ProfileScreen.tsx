@@ -42,7 +42,9 @@ const ProfileScreen: FC = () => {
       </Button>
 
       <Line />
-      <Button onPress={onPressLogout}>Выйти</Button>
+      <Button onPress={onPressLogout} style={{ alignSelf: 'flex-start' }} filled>
+        Выйти
+      </Button>
     </Layout>
   );
 };

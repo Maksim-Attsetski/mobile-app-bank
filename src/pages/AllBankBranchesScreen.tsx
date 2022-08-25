@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, Dimensions } from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, Text, Dimensions, View } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Layout from '../components/Layout';
@@ -7,13 +7,13 @@ import Button from '../components/UI/Button';
 import Loader from '../components/UI/Loader';
 import useBankBranch from '../hooks/useBankBranch';
 
-const AllBankBranchesScreen = ({ navigation }: any) => {
+const AllBankBranchesScreen: FC<any> = ({ navigation }) => {
   const { bankBranches, isBankBranchesLoading } = useBankBranch();
 
   return isBankBranchesLoading ? (
     <Loader />
   ) : (
-    <SafeAreaView style={styles.container}>
+    <View>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -40,14 +40,11 @@ const AllBankBranchesScreen = ({ navigation }: any) => {
       <Button style={styles.backBtn} textStyle={{ color: '#fff' }} onPress={() => navigation.goBack()}>
         Назад
       </Button>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 50,
-  },
   backBtn: {
     position: 'absolute',
     top: '5%',
@@ -57,7 +54,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.92,
+    height: Dimensions.get('window').height,
   },
 });
 

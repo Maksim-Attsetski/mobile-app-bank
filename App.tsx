@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { AuthProvider } from './src/components/AuthProvider';
 import Loader from './src/components/UI/Loader';
 import Navigation from './src/navigation/Navigation';
