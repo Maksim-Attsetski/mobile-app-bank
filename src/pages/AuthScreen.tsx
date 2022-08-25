@@ -1,20 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { FC, useState } from 'react';
-import { Text, View } from 'react-native';
 import Layout from '../components/Layout';
 import Button from '../components/UI/Button';
 import Input from '../components/UI/Input';
 import Line from '../components/UI/Line';
 import Title from '../components/UI/Title';
 import { useAuth } from '../hooks/useAuth';
-import { TypeNavigation } from '../navigation/navTypes';
 
 interface IFormItems {
   email: string;
   password: string;
 }
 
-const AuthScreen: FC<any> = ({ navigation }) => {
+const AuthScreen: FC = () => {
   const { handleRegister, handleLogin } = useAuth();
   const { navigate } = useNavigation();
   const [isLogin, setIsLogin] = useState<boolean>(true);

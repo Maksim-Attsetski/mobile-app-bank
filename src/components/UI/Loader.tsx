@@ -7,9 +7,13 @@ interface IProps {
 }
 
 const Loader: FC<IProps> = ({ size = 'large' }) => {
-  const colors = ['#accbee', '#e7f0fd'];
   return size === 'large' ? (
-    <LinearGradient colors={colors} style={{ flex: 1 }} start={{ x: 0.0, y: 0.45 }} end={{ x: 1, y: 1 }}>
+    <LinearGradient
+      colors={['#accbee', '#e7f0fd']}
+      style={{ flex: 1 }}
+      start={{ x: 0.0, y: 0.45 }}
+      end={{ x: 1, y: 1 }}
+    >
       <SafeAreaView style={styles.container}>
         <ActivityIndicator size={'large'} color={'#5460fe'} />
       </SafeAreaView>
